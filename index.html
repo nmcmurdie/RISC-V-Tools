@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>RISC-V Tools</title>
+        <script src="script.js"></script>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div class="header">
+            <span class="header-title">RISC-V Tools</span>
+            <div class="header-links">
+                <a class="link-item" title="RISC-V ISA" target="_blank" href="https://learningsuite.byu.edu/plugins/Upload/fileDownload.php?fileId=9998cd81-65iC-b89e-MX3f-1z3d528540ff"></a>
+            </div>
+        </div>
+        <div class="body">
+            <input type="text" id="input" class="hex-form hex-input" name="hexInput" value="0x12345633" />
+            <input type="submit" id="calc" class="hex-form hex-submit" value=" " />
+            <br><br>
+            Binary: <input type="text" id="binaryOutput" disabled class="input" />
+            <br>
+            Opcode: <input type="text" id="opcode" disabled class="input" />
+            <br>
+            Type: <input type="text" id="type" disabled class="input" />
+            <br>
+            <hr>
+            <div id="format"></div>
+        </div>
+    </body>
+</html>
