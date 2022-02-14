@@ -13,8 +13,23 @@ function hex2bin(hex){
     return (parseInt(hex, 16).toString(2)).padStart(8, '0');
 }
 
-function bin2dec(bin) {
+// Binary string to decimal, unsigned
+function bin2decu(bin) {
     return parseInt(bin, 2);
+}
+
+// Binary string to 2s complement decimal
+function bin2dec(bin) {
+    let factor = 1,
+        total = 0;
+
+    for (let i = bin.length - 1; i >= 0; i--) {
+        let digit = +bin[i] * factor;
+        total += (i === 0) ? -digit : digit;
+        factor *= 2;
+    }
+
+    return total;
 }
 
 function bin2hex(bin) {
@@ -110,37 +125,21 @@ function processFields(type) {
             addField("rd", [[11, 7]]);
             break;
         case "I":
-            // Rewrite to use new functions
-            imm = binary.substring(0, 12);
-            rs1 = binary.substring(12, 17);
-            func3 = binary.substring(17,20);
-            rd = binary.substring(20, 25);
-            for (let i = 0; i < 20; i++) {
-                immStr += imm[0];
-            }
-            immStr += imm;
-            addField("imm", immStr);
-            addField("rs1", rs1+"  =  "+bin2dec(rs1));
-            addField("func3", func3+"  =  "+bin2dec(func3));
-            addField("rd", rd+"  =  "+bin2dec(rd));
+            let imm_I = getBits(binary, [[31, 20]]),
+                immExtended_I = extend(imm_I, true);
+            addField("imm", immExtended_I, true);
+            addField("rs1", [[19, 15]]);
+            addField("func3", [[14, 10]]);
+            addField("rd", [[9, 6]]);
             break;
         case "SB":
-            // Rewrite to use new functions + fix
-            let imm12 = binary.substring(0, 1);
-            let imm105 = binary.substring(1,7);
-            console.log(imm12, imm105);
-            rs2 = binary.substring(7,12);
-            addField("rs2", rs2);
-            rs1 = binary.substring(12,17);
-            addField("rs1", rs1);
-            func3 = binary.substring(17,20);
-            addField("func3", func3);
-            let imm41 = binary.substring(20, 24);
-            let imm11 = binary.substring(24, 25);
-            for (let i = 0; i < 19; i++) {
-                immStr += imm12;
-            }
-            addField("imm", immStr+imm12+imm11+imm105+imm41+"0");
+            let imm_SB = getBits(binary, [[31],[7],[30,25],[11,8]])+'0',
+                immExtended_SB = extend(imm_SB, true);
+            console.log(imm_SB, immExtended_SB);
+            addField("imm", immExtended_SB, true);
+            addField("rs2", [[24, 20]]);
+            addField("rs1", [[19, 15]]);
+            addField("func3", [[14, 12]]);
             break;
     }
 }
