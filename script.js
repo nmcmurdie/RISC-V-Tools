@@ -106,6 +106,7 @@ function processFields(type) {
             addField("rd", [[11, 7]]);
             break;
         case "I":
+            // Rewrite to use new functions
             imm = binary.substring(0, 12);
             rs1 = binary.substring(12, 17);
             func3 = binary.substring(17,20);
@@ -120,6 +121,7 @@ function processFields(type) {
             addField("rd", rd+"  =  "+bin2dec(rd));
             break;
         case "SB":
+            // Rewrite to use new functions + fix
             let imm12 = binary.substring(0, 1);
             let imm105 = binary.substring(1,7);
             console.log(imm12, imm105);
