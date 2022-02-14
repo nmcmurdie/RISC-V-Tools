@@ -21,19 +21,23 @@ function bin2hex(bin) {
     return parseInt(bin, 2).toString(16);
 }
 
-function zeroExtend(bin) {
-    let numZeros = INSTRUCTION_LENGTH - bin.length;
-    let zeroStr = "";
-    for (let i = 0; i < numZeros; i++) {
-        zeroStr += '0';
+// Extend binary to 32 bits, sign extend with isSignExtend
+function extend(bin, isSignExtend) {
+    let numBits = INSTRUCTION_LENGTH - bin.length;
+    let extendStr = "",
+        extendBit = isSignExtend ? bin[0] : '0';
+
+    for (let i = 0; i < numBits; i++) {
+        extendStr += extendBit;
     }
-    return zeroStr + bin;
+
+    return extendStr + bin;
 }
 
 // Perform initial computations for bit type and opcode
 function calculate(evt) {
     let hex = evt.target.previousElementSibling.value;
-    binary = zeroExtend(hex2bin(hex));
+    binary = extend(hex2bin(hex));
     document.getElementById("binaryOutput").value = binary;
 
     let opcode = getBits(binary, [[6,0]]);
