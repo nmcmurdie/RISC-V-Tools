@@ -135,7 +135,6 @@ function processFields(type) {
         case "SB":
             let imm_SB = getBits(binary, [[31],[7],[30,25],[11,8]])+'0',
                 immExtended_SB = extend(imm_SB, true);
-            console.log(imm_SB, immExtended_SB);
             addField("imm", immExtended_SB, true);
             addField("rs2", [[24, 20]]);
             addField("rs1", [[19, 15]]);

@@ -21,13 +21,18 @@
     height: 100px;
     background-color: #3f51b5;
     box-shadow: 0 3px 6px rgba(0, 0, 0, .1);
+    background-image: url(res/cpu-32-bit.svg);
+    background-repeat: no-repeat;
+    background-size: 48px 48px;
+    background-position: 32px center;
+    text-indent: 112px;
 }
 .header-title {
     line-height: 100px;
-    margin-left: 30px;
     font-size: 28px;
     color: #fff;
-    font-family: roboto, arial;
+    font-family: roboto-med, arial;
+    -webkit-font-smoothing: antialiased;
 }
 .header-links {
     position: absolute;
