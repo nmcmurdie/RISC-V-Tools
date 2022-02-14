@@ -68,6 +68,12 @@ body {
     top: 100px;
     padding: 20px;
 }
+.value-label {
+    display: inline-block;
+    width: 56px;
+    text-align: right;
+    margin-right: 4px;
+}
 
 /* Text Input */
 .hex-form {

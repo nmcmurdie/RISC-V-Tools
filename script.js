@@ -147,7 +147,17 @@ function processFields(type) {
 // Will use custom bits from descriptor if isCustom is set
 function addField(name, descriptor, isCustom) {
     let container = document.getElementById("format");
-    container.appendChild(document.createTextNode(name+": "));
+    let label = document.createElement("span");
+    label.classList.add("value-label");
+    label.appendChild(document.createTextNode(name+":"));
+    
+    let select = document.createElement("select");
+    let options = ["Binary", "Hex", "Unsigned Decimal", "Signed Decimal"];
+    options.forEach(opt => {
+        let option = document.createElement("option");
+        option.appendChild(document.createTextNode(opt));
+        select.appendChild(option);
+    });
     
     let input = document.createElement("input");
     input.type = "text";
@@ -156,6 +166,8 @@ function addField(name, descriptor, isCustom) {
     input.classList.add("input");
     input.value = isCustom ? descriptor : getBits(binary, descriptor);
 
+    container.appendChild(label);
     container.appendChild(input);
+    container.appendChild(select);
     container.appendChild(document.createElement("br"));
 }
