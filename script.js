@@ -8,7 +8,6 @@ var binary, prevType;
 // Add click listeners
 window.addEventListener('load', () => {
     document.getElementById("calc").addEventListener('click', calculate);
-    document.getElementById("calc").click();
 });
 
 function hex2bin(hex){
