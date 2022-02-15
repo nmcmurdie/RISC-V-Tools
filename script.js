@@ -1,5 +1,6 @@
 'use strict'
-const INSTRUCTION_LENGTH = 32;
+const INSTRUCTION_LENGTH = 32, R_OPCODE = "0110011", I_OPCODE = "0010011", 
+        S_OPCODE = "0100011", L_OPCODE = "0000011", SB_OPCODE = "1100011";
 const UNIT_OPTIONS = ["Binary", "Hex", "Unsigned Decimal", "Signed Decimal"];
 
 var binary, prevType;
@@ -89,19 +90,19 @@ function calculate(evt) {
 
     let type = "";
     switch (opcode) {
-        case "0110011":
+        case R_OPCODE:
             type = "R";
             break;
-        case "0010011":
+        case I_OPCODE:
             type = "I";
             break;
-        case "0100011":
+        case S_OPCODE:
             type = "S";
             break;
-        case "0000011":
+        case L_OPCODE:
             type = "L";
             break;
-        case "1100011":
+        case SB_OPCODE:
             type = "SB";
             break;
         default:
@@ -124,15 +125,20 @@ function processFields(type) {
 
     switch (type) {
         case "R":
+            let func_r = getInstruction(type,[[31,25],[14,12]]);
+            addField("name", func_r, sameType);
             addField("func7", [[31,25]], sameType);
             addField("rs2", [[24, 20]], sameType);
             addField("rs1", [[19, 15]], sameType);
             addField("func3", [[14, 12]], sameType);
             addField("rd", [[11, 7]], sameType);
             break;
+        case "L":
         case "I":
             let imm_I = getBits(binary, [[31, 20]]),
                 immExtended_I = extend(imm_I, true);
+            let func_i = getInstruction(type,[[14,12]]);
+            addField("name", func_i, sameType);
             addField("imm", immExtended_I, sameType);
             addField("rs1", [[19, 15]], sameType);
             addField("func3", [[14, 12]], sameType);
@@ -141,6 +147,8 @@ function processFields(type) {
         case "SB":
             let imm_SB = getBits(binary, [[31],[7],[30,25],[11,8]])+'0',
                 immExtended_SB = extend(imm_SB, true);
+            let func_sb = getInstruction(type,[[14,12]]);
+            addField("name", func_sb, sameType);
             addField("imm", immExtended_SB, sameType);
             addField("rs2", [[24, 20]], sameType);
             addField("rs1", [[19, 15]], sameType);
@@ -198,7 +206,7 @@ function constructField(name) {
     let container = document.getElementById("format");
     container.appendChild(label);
     container.appendChild(input);
-    container.appendChild(select);
+    if (name !== "name") container.appendChild(select);
     container.appendChild(document.createElement("br"));
 
     return input
@@ -222,5 +230,59 @@ function unitConvert(input) {
         case "Signed Decimal":
             input.value = bin2dec(binary);
             break;
+    }
+}
+
+// Get instruction name from instruction type + func bits
+function getInstruction(code, descriptor) {
+    let instrCode = code + getBits(binary, descriptor);
+
+    // Format: type + func3 + func7 (<- only R)
+    switch (instrCode) {
+        // L-type
+        case "L000": return "lb";
+        case "L001": return "lh";
+        case "L010": return "lw";
+        case "L011": return "ld";
+        case "L100": return "lbu";
+        case "L101": return "lhu";
+        case "L110": return "lwu";
+
+        // I-type
+        case "I000": return "addi";
+        case "I001": return "slli";
+        case "I010": return "slti";
+        case "I011": return "sltiu";
+        case "I100": return "xori";
+        case "I101": return "srli or srai";
+        case "I110": return "ori";
+        case "I111": return "andi";
+
+        // S-type
+        case "S000": return "sb";
+        case "S001": return "sh";
+        case "S010": return "sw";
+        case "S011": return "sd";
+
+        // R-type
+        case "R0000000000": return "add";
+        case "R0010000000": return "sll";
+        case "R0100000000": return "slt";
+        case "R0110000000": return "sltu";
+        case "R1000000000": return "xor";
+        case "R1010000000": return "srl";
+        case "R1010100000": return "sra";
+        case "R1100000000": return "or";
+        case "R1110000000": return "and";
+
+        // SB-type
+        case "SB000": return "beq";
+        case "SB001": return "bne";
+        case "SB100": return "blt";
+        case "SB101": return "bge";
+        case "SB110": return "bltu";
+        case "SB111": return "bgeu";
+
+        default: return "UNKNOWN";
     }
 }
