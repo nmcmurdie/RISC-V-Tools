@@ -8,6 +8,7 @@ var binary, prevType;
 // Add click listeners
 window.addEventListener('load', () => {
     document.getElementById("calc").addEventListener('click', calculate);
+    document.getElementById("calc").click();
 });
 
 function hex2bin(hex){
@@ -143,6 +144,16 @@ function processFields(type) {
             addField("rs1", [[19, 15]], sameType);
             addField("func3", [[14, 12]], sameType);
             addField("rd", [[11, 7]], sameType);
+            break;
+        case "S":
+            let imm_S = getBits(binary, [[31, 25], [11, 7]]),
+                immExtended_S = extend(imm_S, true);
+            let func_s = getInstruction(type,[[14,12]]);
+            addField("name", func_s, sameType);
+            addField("imm", immExtended_S, sameType);
+            addField("rs2", [[24, 20]], sameType);
+            addField("rs1", [[19, 15]], sameType);
+            addField("func3", [[14, 12]], sameType);
             break;
         case "SB":
             let imm_SB = getBits(binary, [[31],[7],[30,25],[11,8]])+'0',
