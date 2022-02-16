@@ -125,7 +125,7 @@ function processFields(type) {
 
     switch (type) {
         case "R":
-            let func_r = getInstruction(type,[[31,25],[14,12]]);
+            let func_r = getInstruction(type,[[14,12],[31,25]]);
             addField("name", func_r, sameType);
             addField("func7", [[31,25]], sameType);
             addField("rs2", [[24, 20]], sameType);
@@ -276,6 +276,7 @@ function getInstruction(code, descriptor) {
 
         // R-type
         case "R0000000000": return "add";
+        case "R0000100000": return "sub";
         case "R0010000000": return "sll";
         case "R0100000000": return "slt";
         case "R0110000000": return "sltu";
