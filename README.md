@@ -6,5 +6,5 @@
 </h1>
 
 <p align="center">
-  A simple website to extract meaningful information from RISC-V instructions
+  Tools to aid development with the RISC-V instruction set
 </p>
