@@ -3,7 +3,7 @@ const INSTRUCTION_LENGTH = 32, R_OPCODE = "0110011", I_OPCODE = "0010011",
         S_OPCODE = "0100011", L_OPCODE = "0000011", SB_OPCODE = "1100011";
 const UNIT_OPTIONS = ["Binary", "Hex", "Unsigned Decimal", "Signed Decimal"];
 const BASE_UNITS = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'];
-const SIGNED = true, UNSIGNED = false;
+const SIGNED = true, UNSIGNED = false, SIGN_EXTEND = true;
 
 var binary, prevType;
 
@@ -35,17 +35,21 @@ function convertToDec(numStr, fromBase, isSigned, isNegative) {
     return isNegative ? -decimal : decimal;
 }
 
+// Determine how many bits are needed to represent a given decimal
+function decBits(decimal) {
+    return Math.ceil(Math.log(Math.abs(decimal)) / Math.LN2) + 1;
+}
+
 // Convert given decimal to the decimal equivalent of the signed binary representation
 function decToSigned(decimal) {
-    // Determine how many bits are necessary
-    let bits = Math.ceil(Math.log(Math.abs(decimal)) / Math.LN2) + 1;
-
+    let bits = decBits(decimal);
     let factor = Math.pow(2, bits - 1), 
         target = decimal,
         value = -factor;
 
     decimal = factor;
 
+    // Build signed binary and compute new decimal value
     for (let i = bits - 2; i >= 0; i--) {
         factor /= 2;
 
@@ -81,7 +85,7 @@ function convertBase(numStr, fromBase, toBase, isSigned) {
         isNegative = true;
         numStr = numStr.substring(1);
     }
-    else if (numStr.substring(0, 2) === "0x") numStr = numStr.substring(2);
+    if (numStr.substring(0, 2) === "0x") numStr = numStr.substring(2);
     if (numStr[0] === '0') isSigned = UNSIGNED;
     numStr = numStr.toLowerCase();
 
@@ -98,13 +102,16 @@ function convertBase(numStr, fromBase, toBase, isSigned) {
 
     let result = decToBase(decimal, toBase);
     if (isHexSigned > 0) {
-        // Convert unsigned binary from the signed hex back into signed, intended base
+        // Convert and sign extend unsigned binary from the signed hex back into signed, intended base
+        let signExtend = BASE_UNITS.indexOf(numStr[0]) >= fromBase / 2;
+        result = extend(result, decBits(decimal), signExtend);
         return convertBase(result, 2, isHexSigned, SIGNED);
     }
 
     return result;
 }
 
+// Convert the units given in the 'convert' fields
 function convert() {
     let input = document.getElementById('convertInput').value;
     let fromBase = document.getElementById('convertFrom').value;
@@ -117,8 +124,8 @@ function convert() {
 }
 
 // Extend binary to 32 bits, sign extend if isSignExtend
-function extend(bin, isSignExtend) {
-    let numBits = INSTRUCTION_LENGTH - bin.length;
+function extend(bin, length, isSignExtend) {
+    let numBits = length - bin.length;
     let extendStr = "",
         extendBit = isSignExtend ? bin[0] : '0';
 
@@ -161,7 +168,7 @@ function calculate(evt) {
     let hex = evt.target.previousElementSibling.value.trim();
     if (hex.length === 0) return;
 
-    binary = extend(convertBase(hex, 16, 2, UNSIGNED));
+    binary = extend(convertBase(hex, 16, 2, UNSIGNED), INSTRUCTION_LENGTH);
     document.getElementById("binaryOutput").value = binary;
 
     let opcode = getBits(binary, [[6,0]]);
@@ -215,7 +222,7 @@ function processFields(type) {
         case "L":
         case "I":
             let imm_I = getBits(binary, [[31, 20]]),
-                immExtended_I = extend(imm_I, true);
+                immExtended_I = extend(imm_I, INSTRUCTION_LENGTH, SIGN_EXTEND);
             let func_i = getInstruction(type,[[14,12]]);
             addField("name", func_i, sameType);
             addField("imm", immExtended_I, sameType);
@@ -225,7 +232,7 @@ function processFields(type) {
             break;
         case "S":
             let imm_S = getBits(binary, [[31, 25], [11, 7]]),
-                immExtended_S = extend(imm_S, true);
+                immExtended_S = extend(imm_S, INSTRUCTION_LENGTH, SIGN_EXTEND);
             let func_s = getInstruction(type,[[14,12]]);
             addField("name", func_s, sameType);
             addField("imm", immExtended_S, sameType);
@@ -235,7 +242,7 @@ function processFields(type) {
             break;
         case "SB":
             let imm_SB = getBits(binary, [[31],[7],[30,25],[11,8]])+'0',
-                immExtended_SB = extend(imm_SB, true);
+                immExtended_SB = extend(imm_SB, INSTRUCTION_LENGTH, SIGN_EXTEND);
             let func_sb = getInstruction(type,[[14,12]]);
             addField("name", func_sb, sameType);
             addField("imm", immExtended_SB, sameType);
