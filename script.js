@@ -13,6 +13,12 @@ window.addEventListener('load', () => {
     document.getElementById("convertSubmit").addEventListener('click', convert);
 });
 
+// Determine if digit would be negative in 2s complement given the base
+function hasNegative(digit, fromBase) {
+    if (typeof digit === 'string') digit = BASE_UNITS.indexOf(digit);
+    return digit >= fromBase / 2;
+}
+
 // Convert number in any base to decimal
 // if isSigned then original base was in 2s complement
 function convertToDec(numStr, fromBase, isSigned, isNegative) {
@@ -23,7 +29,7 @@ function convertToDec(numStr, fromBase, isSigned, isNegative) {
         let digit = numStr[i];
         let num = BASE_UNITS.indexOf(digit);
         
-        if (i === 0 && isSigned && num >= fromBase / 2) {
+        if (i === 0 && isSigned && hasNegative(num, fromBase)) {
             // Left-most bit in binary would be a 1, make negative
             num *= -1;
         }
@@ -103,8 +109,7 @@ function convertBase(numStr, fromBase, toBase, isSigned) {
     let result = decToBase(decimal, toBase);
     if (isHexSigned > 0) {
         // Convert and sign extend unsigned binary from the signed hex back into signed, intended base
-        let signExtend = BASE_UNITS.indexOf(numStr[0]) >= fromBase / 2;
-        result = extend(result, decBits(decimal), signExtend);
+        result = extend(result, decBits(decimal), hasNegative(numStr[0], fromBase));
         return convertBase(result, 2, isHexSigned, SIGNED);
     }
 
