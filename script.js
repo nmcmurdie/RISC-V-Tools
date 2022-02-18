@@ -279,6 +279,19 @@ function addField(name, descriptor, isCreated) {
     unitConvert(input);
 }
 
+function getDefaultUnits(name) {
+    switch (name) {
+        case "imm":
+            return "Signed Decimal";
+        case "rs1":
+        case "rs2":
+        case "rd":
+            return "Unsigned Decimal";
+        default:
+            return "Binary";
+    }
+}
+
 // Create a new field from scratch following format of addField
 function constructField(name) {
     // Label
@@ -288,11 +301,13 @@ function constructField(name) {
     
     // Dropdown list
     let select = document.createElement("select");
+    select.classList.add("value-select");
     UNIT_OPTIONS.forEach(opt => {
         let option = document.createElement("option");
         option.appendChild(document.createTextNode(opt));
         select.appendChild(option);
     });
+    select.value = getDefaultUnits(name);
     select.addEventListener("change", evt => {
         unitConvert(evt.target.previousElementSibling);
     })
@@ -308,7 +323,7 @@ function constructField(name) {
     container.appendChild(label);
     container.appendChild(input);
     if (name !== "name") container.appendChild(select);
-    container.appendChild(document.createElement("br"));
+    else container.appendChild(document.createElement("br"));
 
     return input
 }
@@ -318,7 +333,7 @@ function unitConvert(input) {
     let unit = input.nextElementSibling;
     let binary = input.getAttribute("binary");
     
-    switch (unit.value) {
+    if (unit) switch (unit.value) {
         case "Binary":
             input.value = binary;
             break;

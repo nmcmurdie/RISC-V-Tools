@@ -104,6 +104,17 @@ body {
     text-align: right;
     margin-right: 4px;
 }
+.value-select {
+    display: block;
+    width: 130px;
+    margin-left: 60px;
+    margin-top: 4px;
+    border: none;
+    color: #4c4c4c;
+    background-color: transparent;
+    margin-bottom: 10px;
+    outline: none;
+}
 
 /* Text Input */
 .hex-form {
