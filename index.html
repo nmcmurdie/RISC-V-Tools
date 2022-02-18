@@ -32,13 +32,18 @@
             </div>
             <div class="form-container" name="Unit Converter">
                 <br>
+                <label for="convertSigned">Signed</label>
+                <input type="checkbox" id="convertSigned" />
                 <label for="convertInput">Input</label>
                 <input type="text" id="convertInput" class="hex-form hex-input hex-separate" name="convertInput" value="0xff918113" />
                 <label for="convertFrom">Input Base</label>
                 <input type="number" id="convertFrom" class="hex-form hex-input hex-number hex-separate" name="convertFrom" value="16" />
                 <label for="convertTo">Output Base</label>
                 <input type="number" id="convertTo" class="hex-form hex-input hex-number hex-separate" name="convertTo" value="10" />
-                <input type="submit" id="calc" class="hex-form hex-submit hex-separate" value=" " />
+                <input type="submit" id="convertSubmit" class="hex-form hex-submit hex-separate" value=" " />
+                <br><br><br>
+                <label for="convertOutput">Output</label>
+                <input disabled type="text" id="convertOutput" class="hex-form hex-input hex-separate" name="convertOutput" value="" />
             </div>
         </div>
     </body>

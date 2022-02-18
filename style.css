@@ -92,10 +92,11 @@ body {
 .form-container::before {
     content: attr(name);
     position: absolute;
-    margin-top: -42px;
+    margin-top: -41px;
     background-color: var(--background-color);
     color: var(--text-light);
     padding: 0 6px;
+    font-size: 14px;
 }
 .value-label {
     display: inline-block;
@@ -107,12 +108,12 @@ body {
 /* Text Input */
 .hex-form {
     border: 0px solid transparent;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, .1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .08);
     box-sizing: border-box;
     transition: box-shadow .3s ease;
 }
 .hex-form:hover, .hex-form:focus {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, .2);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, .12);
 }
 .hex-input {
     padding: 12px;
@@ -122,6 +123,19 @@ body {
     outline: none;
     border-radius: 6px 0 0 6px;
     margin-right: -4px;
+}
+.hex-input[disabled] {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .08);
+}
+.hex-input[disabled]:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .08);
+}
+#convertOutput {
+    width: 258px;
+}
+#convertSigned {
+    margin: 0 20px;
 }
 .hex-number {
     width: 70px;
