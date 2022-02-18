@@ -2,6 +2,8 @@
 const INSTRUCTION_LENGTH = 32, R_OPCODE = "0110011", I_OPCODE = "0010011", 
         S_OPCODE = "0100011", L_OPCODE = "0000011", SB_OPCODE = "1100011";
 const UNIT_OPTIONS = ["Binary", "Hex", "Unsigned Decimal", "Signed Decimal"];
+const BASE_UNITS = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'];
+const SIGNED = true, UNSIGNED = false;
 
 var binary, prevType;
 
@@ -35,6 +37,23 @@ function bin2dec(bin) {
 
 function bin2hex(bin) {
     return parseInt(bin, 2).toString(16);
+}
+
+// Convert a number from base 'fromBase' to base 'toBase'
+// isSigned determines whether or not initial number was signed
+function convertBase(numStr, fromBase, toBase, isSigned) {
+    let decimal = 0;
+    let factor = 1;
+    let factorConvert = 1;
+
+    for (let i = numStr.length - 1; i >= 0; i--) {
+        let digit = +numStr[i];
+        if (i === 0 && isSigned) digit *= -1;
+        decimal += factor * digit;
+        factor *= fromBase;
+    }
+
+    return decimal;
 }
 
 // Extend binary to 32 bits, sign extend with isSignExtend

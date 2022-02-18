@@ -15,20 +15,31 @@
             </div>
         </div>
         <div class="body">
-            <input type="text" id="input" class="hex-form hex-input" name="hexInput" value="" />
-            <input type="submit" id="calc" class="hex-form hex-submit" value=" " />
-            <br><br>
-            <span class="value-label">Binary:</span>
-            <input type="text" id="binaryOutput" disabled class="input" />
-            <br>
-            <span class="value-label">Opcode:</span>
-            <input type="text" id="opcode" disabled class="input" />
-            <br>
-            <span class="value-label">Type:</span>
-            <input type="text" id="type" disabled class="input" />
-            <br>
-            <hr>
-            <div id="format"></div>
+            <div class="form-container decode-container" name="Instruction Decode">
+                <input type="text" id="input" class="hex-form hex-input" name="hexInput" value="0xff918113" />
+                <input type="submit" id="calc" class="hex-form hex-submit" value=" " />
+                <br><br>
+                <span class="value-label">Binary:</span>
+                <input type="text" id="binaryOutput" disabled class="input" />
+                <br>
+                <span class="value-label">Opcode:</span>
+                <input type="text" id="opcode" disabled class="input" />
+                <br>
+                <span class="value-label">Type:</span>
+                <input type="text" id="type" disabled class="input" />
+                <br><br>
+                <div id="format"></div>
+            </div>
+            <div class="form-container" name="Unit Converter">
+                <br>
+                <label for="convertInput">Input</label>
+                <input type="text" id="convertInput" class="hex-form hex-input hex-separate" name="convertInput" value="0xff918113" />
+                <label for="convertFrom">Input Base</label>
+                <input type="number" id="convertFrom" class="hex-form hex-input hex-number hex-separate" name="convertFrom" value="16" />
+                <label for="convertTo">Output Base</label>
+                <input type="number" id="convertTo" class="hex-form hex-input hex-number hex-separate" name="convertTo" value="10" />
+                <input type="submit" id="calc" class="hex-form hex-submit hex-separate" value=" " />
+            </div>
         </div>
     </body>
 </html>
