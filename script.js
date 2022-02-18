@@ -12,51 +12,73 @@ window.addEventListener('load', () => {
     document.getElementById("calc").addEventListener('click', calculate);
 });
 
-function hex2bin(hex){
-    return (parseInt(hex, 16).toString(2)).padStart(8, '0');
-}
-
-// Binary string to decimal, unsigned
-function bin2decu(bin) {
-    return parseInt(bin, 2);
-}
-
-// Binary string to 2s complement decimal
-function bin2dec(bin) {
-    let factor = 1,
-        total = 0;
-
-    for (let i = bin.length - 1; i >= 0; i--) {
-        let digit = +bin[i] * factor;
-        total += (i === 0) ? -digit : digit;
-        factor *= 2;
-    }
-
-    return total;
-}
-
-function bin2hex(bin) {
-    return parseInt(bin, 2).toString(16);
-}
-
 // Convert a number from base 'fromBase' to base 'toBase'
 // isSigned determines whether or not initial number was signed
 function convertBase(numStr, fromBase, toBase, isSigned) {
-    let decimal = 0;
-    let factor = 1;
-    let factorConvert = 1;
+    let factor = 1, decimal = 0, isNegative = false, isHexSigned = 0;
+    let result = "";
 
+    if (numStr[0] === '-') {
+        // Number is negative, only process numeric portion
+        isNegative = true;
+        numStr = numStr.substring(1);
+    }
+
+    if (fromBase === 16 && isSigned) {
+        // Can't convert from signed hex properly, convert to unsigned binary first
+        isHexSigned = toBase;
+        toBase = 2;
+        isSigned = UNSIGNED;
+    }
+
+    // Convert number to decimal first
     for (let i = numStr.length - 1; i >= 0; i--) {
-        let digit = +numStr[i];
-        if (i === 0 && isSigned) digit *= -1;
-        decimal += factor * digit;
+        let digit = numStr[i];
+        let num = BASE_UNITS.indexOf(digit);
+        
+        if (i === 0 && isSigned && num >= fromBase / 2) {
+            // Left-most bit in binary would be a 1
+            num *= -1;
+        }
+
+        decimal += factor * num;
         factor *= fromBase;
     }
 
-    return decimal;
+    if (isNegative) decimal *= -1;
+    if (toBase === 10) return decimal;
+
+    if (decimal < 0) {
+        // Number is negative, calculate as binary while converting to decimal
+        let bits = 32, target = decimal;
+        let factor = Math.pow(2, bits - 1);
+        let value = -factor;
+        decimal = factor;
+
+        for (let i = bits - 2; i >= 0; i--) {
+            factor /= 2;
+            if (value + factor <= target) {
+                value += factor;
+                decimal += factor;
+            }
+        }
+    }
+
+    // Convert from decimal to desired base
+    while (decimal > 0) {
+        result = BASE_UNITS[decimal % toBase] + result;
+        decimal = Math.floor(decimal / toBase);
+    }
+
+    if (isHexSigned > 0) {
+        // Convert unsigned hex into signed, intended base
+        return convertBase(result, 2, isHexSigned, SIGNED);
+    }
+
+    return result;
 }
 
-// Extend binary to 32 bits, sign extend with isSignExtend
+// Extend binary to 32 bits, sign extend if isSignExtend
 function extend(bin, isSignExtend) {
     let numBits = INSTRUCTION_LENGTH - bin.length;
     let extendStr = "",
@@ -101,7 +123,7 @@ function calculate(evt) {
     let hex = evt.target.previousElementSibling.value.trim();
     if (hex.length === 0) return;
 
-    binary = extend(hex2bin(hex));
+    binary = extend(convertBase(hex, 16, 2, UNSIGNED));
     document.getElementById("binaryOutput").value = binary;
 
     let opcode = getBits(binary, [[6,0]]);
@@ -251,13 +273,13 @@ function unitConvert(input) {
             input.value = binary;
             break;
         case "Hex":
-            input.value = bin2hex(binary);
+            input.value = convertBase(binary, 2, 16, UNSIGNED);
             break;
         case "Unsigned Decimal":
-            input.value = bin2decu(binary);
+            input.value = convertBase(binary, 2, 10, UNSIGNED);
             break;
         case "Signed Decimal":
-            input.value = bin2dec(binary);
+            input.value = convertBase(binary, 2, 10, SIGNED);
             break;
     }
 }
