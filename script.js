@@ -360,7 +360,7 @@ function constructField(name) {
     valueGroup.appendChild(label);
     valueGroup.appendChild(input);
     container.appendChild(valueGroup);
-    if (name !== "name") container.appendChild(select);
+    if (name !== "name") valueGroup.appendChild(select);
     else container.appendChild(document.createElement("br"));
 
     return input
