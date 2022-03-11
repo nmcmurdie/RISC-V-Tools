@@ -122,19 +122,6 @@ body {
     margin-bottom: 10px;
     outline: none;
 }
-@media only screen and (max-device-width: 480px) {
-    .value-label {
-        text-align: left;
-        margin-left: 4px;
-    }
-    .input {
-        width: 100%;
-    }
-    .form-container {
-        width: 100%;
-        margin: 10px 0;
-    }
-}
 
 /* Text Input */
 .hex-form {
@@ -198,4 +185,22 @@ input[type="checkbox"] {
     width: 14px;
     height: 14px;
     margin: 13px 20px 0 20px;
+}
+
+@media only screen and (max-device-width: 480px) {
+    .value-label {
+        text-align: left;
+        margin-left: 4px;
+    }
+    .value-select {
+        margin-left: 50%;
+        transform: translateX(-50%);
+    }
+    .input {
+        width: 100%;
+    }
+    .form-container {
+        width: 100%;
+        margin: 10px 0;
+    }
 }
