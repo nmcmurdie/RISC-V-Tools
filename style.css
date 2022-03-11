@@ -75,7 +75,7 @@ body {
 .body {
     position: absolute;
     top: 110px;
-    padding: 20px;
+    padding: 12px;
 }
 
 /* Form */
@@ -119,14 +119,16 @@ body {
     margin-bottom: 10px;
     outline: none;
 }
-@media only screen and (max-device-width: 480px){
+@media only screen and (max-device-width: 480px) {
     .value-label {
         text-align: left;
-        margin-left: 10px;
+        margin-left: 4px;
     }
-    .value-select, .input {
-        margin-left: 50%;
-        transform: translateX(-50%);
+    .input {
+        width: 100%;
+    }
+    .body {
+        padding: 0;
     }
 }
 

@@ -355,8 +355,11 @@ function constructField(name) {
     input.classList.add("input");
 
     let container = document.getElementById("format");
-    container.appendChild(label);
-    container.appendChild(input);
+    let valueGroup = document.createElement("div");
+    valueGroup.classList.add("value-group");
+    valueGroup.appendChild(label);
+    valueGroup.appendChild(input);
+    container.appendChild(valueGroup);
     if (name !== "name") container.appendChild(select);
     else container.appendChild(document.createElement("br"));
 
