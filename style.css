@@ -81,7 +81,6 @@ body {
 /* Form */
 .form-container {
     display: inline-block;
-    min-width: 300px;
     padding: 30px;
     margin: 10px;
     border-radius: 30px;
@@ -133,7 +132,7 @@ body {
 }
 .hex-input {
     padding: 12px;
-    width: 200px;
+    width: 150px;
     height: 40px;
     text-align: center;
     outline: none;
