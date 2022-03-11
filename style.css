@@ -119,6 +119,16 @@ body {
     margin-bottom: 10px;
     outline: none;
 }
+@media only screen and (max-device-width: 480px){
+    .value-label {
+        text-align: left;
+        margin-left: 10px;
+    }
+    .value-select, .input {
+        margin-left: 50%;
+        transform: translateX(-50%);
+    }
+}
 
 /* Text Input */
 .hex-form {
