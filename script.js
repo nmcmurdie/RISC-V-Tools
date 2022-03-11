@@ -129,41 +129,38 @@ function convert() {
     outputField.value = output;
 }
 
+const isPowerOf2 = x => (Math.log(x) / Math.LN2 % 1) == 0;
+
 // Determine parity bits from input
 function hammingConvert() {
     let input = document.getElementById("hammingInput").value;
     let numParityBits = Math.log(input.length) / Math.LN2 + 1,
         length = input.length + numParityBits;
-    let combinedStr = "", parityStr = "";
+    let combinedStr = [], parityStr = "";
 
-    // Construct initial string with x's for parity bits
     for (let i = 1, j = 0; i < length + 1; i++) {
-        combinedStr += (Math.log(i) / Math.LN2 % 1) ? input[j++] : 'x';
+        combinedStr.push(isPowerOf2(i) ? 'x' : +input[j++]);
     }
     
     // Determine the parity bits
     for (let i = 0; i < numParityBits; i++) {
         let value = 0;
 
+        // XOR each bit corresponding to the parity bit
         for (let j = 0; j < length; j++) {
-            let bin = extend(decToBase(j + 1, 2), numParityBits);
-            if (bin[bin.length - 1 - i] === '1' && combinedStr[j] !== 'x') {
+            let bin = decToBase(j + 1, 2);
+            
+            // Bit has a 1 in the same position as the parity bit and isn't a parity bit itself
+            if (bin[bin.length - 1 - i] === '1' && !isPowerOf2(j + 1))
                 value ^= combinedStr[j];
-            }
         }
 
         parityStr += value;
-    }
-
-    // Construct full string
-    for (let i = 0, parity = 0; i < combinedStr.length; i++) {
-        if (combinedStr[i] === 'x') {
-            combinedStr = combinedStr.substring(0, i) + parityStr[parity] + combinedStr.substring(i + 1);
-        }
+        combinedStr[Math.pow(2, i) - 1] = value;
     }
 
     document.getElementById("hammingOutput").value = parityStr;
-    document.getElementById("hammingOutputFull").value = combinedStr;
+    document.getElementById("hammingOutputFull").value = combinedStr.join('');
 }
 
 // Extend binary to 32 bits, sign extend if isSignExtend
@@ -208,7 +205,7 @@ function getBits(binStr, descriptor) {
 
 // Perform initial computations for bit type and opcode
 function calculate(evt) {
-    let hex = evt.target.previousElementSibling.value.trim();
+    let hex = document.getElementById("input").value.trim();
     if (hex.length === 0) return;
 
     binary = extend(convertBase(hex, 16, 2, UNSIGNED), INSTRUCTION_LENGTH);
