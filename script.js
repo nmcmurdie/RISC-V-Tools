@@ -11,6 +11,7 @@ var binary, prevType;
 window.addEventListener('load', () => {
     document.getElementById("calc").addEventListener('click', calculate);
     document.getElementById("convertSubmit").addEventListener('click', convert);
+    document.getElementById("hammingSubmit").addEventListener('click', hammingConvert);
 });
 
 // Determine if digit would be negative in 2s complement given the base
@@ -126,6 +127,43 @@ function convert() {
     let outputField = document.getElementById('convertOutput');
     let output = convertBase(input, +fromBase, +toBase, sign);
     outputField.value = output;
+}
+
+// Determine parity bits from input
+function hammingConvert() {
+    let input = document.getElementById("hammingInput").value;
+    let numParityBits = Math.log(input.length) / Math.LN2 + 1,
+        length = input.length + numParityBits;
+    let combinedStr = "", parityStr = "";
+
+    // Construct initial string with x's for parity bits
+    for (let i = 1, j = 0; i < length + 1; i++) {
+        combinedStr += (Math.log(i) / Math.LN2 % 1) ? input[j++] : 'x';
+    }
+    
+    // Determine the parity bits
+    for (let i = 0; i < numParityBits; i++) {
+        let value = 0;
+
+        for (let j = 0; j < length; j++) {
+            let bin = extend(decToBase(j + 1, 2), numParityBits);
+            if (bin[bin.length - 1 - i] === '1' && combinedStr[j] !== 'x') {
+                value ^= combinedStr[j];
+            }
+        }
+
+        parityStr += value;
+    }
+
+    // Construct full string
+    for (let i = 0, parity = 0; i < combinedStr.length; i++) {
+        if (combinedStr[i] === 'x') {
+            combinedStr = combinedStr.substring(0, i) + parityStr[parity] + combinedStr.substring(i + 1);
+        }
+    }
+
+    document.getElementById("hammingOutput").value = parityStr;
+    document.getElementById("hammingOutputFull").value = combinedStr;
 }
 
 // Extend binary to 32 bits, sign extend if isSignExtend

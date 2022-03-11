@@ -16,6 +16,8 @@
         </div>
         <div class="body">
             <div class="form-container decode-container" name="Instruction Decode">
+                <br>
+                <label for="input">Instruction Hex</label>
                 <input type="text" id="input" class="hex-form hex-input" name="hexInput" value="0xff918113" />
                 <input type="submit" id="calc" class="hex-form hex-submit" value=" " />
                 <br><br>
@@ -30,7 +32,7 @@
                 <br><br>
                 <div id="format"></div>
             </div>
-            <div class="form-container" name="Unit Converter">
+            <div class="form-container" name="Unit Convert">
                 <br>
                 <label for="convertSigned">Signed</label>
                 <input type="checkbox" id="convertSigned" />
@@ -44,6 +46,18 @@
                 <br><br><br>
                 <label for="convertOutput">Output</label>
                 <input disabled type="text" id="convertOutput" class="hex-form hex-input hex-separate" name="convertOutput" value="" />
+            </div>
+            <div class="form-container" name="Hamming Encode">
+                <br>
+                <label for="convertInput">Input</label>
+                <input type="text" id="hammingInput" class="hex-form hex-input" name="convertInput" value="10100101" />
+                <input type="submit" id="hammingSubmit" class="hex-form hex-submit" value=" " />
+                <br><br><br>
+                <label for="hammingOutput">Parity Bits</label>
+                <input disabled type="text" id="hammingOutput" class="hex-form hex-input hex-separate" name="convertOutput" value="" />
+                <br><br>
+                <label for="hammingOutputFull">Full Encoding</label>
+                <input disabled type="text" id="hammingOutputFull" class="hex-form hex-input hex-separate" name="convertOutput" value="" />
             </div>
         </div>
     </body>
