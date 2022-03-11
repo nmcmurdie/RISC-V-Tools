@@ -75,7 +75,9 @@ body {
 .body {
     position: absolute;
     top: 110px;
+    width: 100%;
     padding: 12px;
+    box-sizing: border-box;
 }
 
 /* Form */
@@ -87,6 +89,7 @@ body {
     border: 2px solid #bbbbbb;
     transition: width .3s ease, height .3s ease;
     vertical-align: top;
+    box-sizing: border-box;
 }
 .form-container::before {
     content: attr(name);
@@ -127,8 +130,9 @@ body {
     .input {
         width: 100%;
     }
-    .body {
-        padding: 0;
+    .form-container {
+        width: 100%;
+        margin: 10px 0;
     }
 }
 
