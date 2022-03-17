@@ -85,12 +85,10 @@ function tooltip(event) {
 	tooltip.appendChild(document.createTextNode(parent.getAttribute("tooltip")));
 
 	if (locY + targetRect.height + 52 >= viewHeight) {
-		console.log("Override top");
 		top = rect.top + parent.scrollTop - 42;
 		tooltip.classList.add("-tooltip-bottom");
 	}
 	if (locX + targetRect.width + 62 >= viewWidth) {
-		console.log("Override left");
 		left = viewWidth - tooltip.clientWidth - 10;
 		tooltip.classList.add("-tooltip-right");
 	}
