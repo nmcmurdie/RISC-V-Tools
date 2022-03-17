@@ -122,7 +122,7 @@ function closeTooltip(event) {
 
 function snackbar(txt) {
 	var sb = document.getElementById("snackbar");
-	sb.firstChild.nodeValue = txt;
+	sb.textContent = txt;
 	if (sbOpen) {
 		clearTimeout(sbTimer);
 		sb.style.animation = "snackbar .5s ease";
