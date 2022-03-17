@@ -239,7 +239,7 @@ input[type="checkbox"] {
 	opacity: .3;
 }
 .-tooltip {
-	position: absolute;
+	position: fixed;
 	transform: translateX(-50%);
     font-family: roboto, arial;
 	opacity: 0;
