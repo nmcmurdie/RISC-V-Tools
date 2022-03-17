@@ -3,15 +3,15 @@
     <head>
         <title>RISC-V Tools</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="script.js"></script>
         <link rel="stylesheet" href="style.css" />
         <link rel="icon" href="res/icon.png" />
     </head>
     <body>
+        <pre class="snackbar" id="snackbar">-</pre>
         <div class="header">
             <span class="header-title">RISC-V Tools</span>
             <div class="header-links">
-                <a class="link-item" title="RISC-V ISA" target="_blank" href="https://learningsuite.byu.edu/plugins/Upload/fileDownload.php?fileId=9998cd81-65iC-b89e-MX3f-1z3d528540ff"></a>
+                <a class="link-item ripple" id="link_isa" target="_blank" href="https://learningsuite.byu.edu/plugins/Upload/fileDownload.php?fileId=9998cd81-65iC-b89e-MX3f-1z3d528540ff"></a>
             </div>
         </div>
         <div class="body">
@@ -19,7 +19,7 @@
                 <div class="label-group">
                     <label for="input">Instruction Hex</label>
                     <input type="text" id="input" class="hex-form hex-input" name="hexInput" value="004b2283" />
-                    <input type="submit" id="calc" class="hex-form hex-submit" value=" " />
+                    <div id="calc" class="hex-form hex-submit ripple"></div>
                 </div>
                 <br><br>
                 <div class="value-group">
@@ -54,7 +54,7 @@
                     <label for="convertTo">Output Base</label>
                     <input type="number" id="convertTo" class="hex-form hex-input hex-number hex-separate" name="convertTo" value="" />
                 </div>
-                <input type="submit" id="convertSubmit" class="hex-form hex-submit hex-separate" value=" " />
+                <div id="convertSubmit" class="hex-form hex-submit hex-separate ripple"></div>
                 <br><br>
                 <div class="label-group">
                     <label for="convertOutput">Output</label>
@@ -65,8 +65,8 @@
                 <div class="label-group">
                     <label for="convertInput">Input</label>
                     <input type="text" id="hammingInput" class="hex-form hex-input" name="convertInput" value="10100101" />
+                    <div id="hammingSubmit" class="hex-form hex-submit ripple"></div>
                 </div>
-                <input type="submit" id="hammingSubmit" class="hex-form hex-submit" value=" " />
                 <br><br>
                 <div class="label-group">
                     <label for="hammingOutput">Parity Bits</label>
@@ -80,4 +80,6 @@
             </div>
         </div>
     </body>
+    <script src="script.js" async></script>
+    <script src="effects.js" async></script>
 </html>

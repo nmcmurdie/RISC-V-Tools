@@ -61,6 +61,7 @@
     background-size: 32px 32px;
     transition: background-color .3s ease;
     border-radius: 12px;
+    color: #fff;
 }
 .link-item:hover {
     background-color: rgba(255,255,255,0.1);
@@ -156,6 +157,9 @@ body {
     width: 70px;
 }
 .hex-submit {
+    display: inline-block;
+    position: relative;
+    vertical-align: top;
     background-color: var(--accent-color);
     color: #fff;
     height: 40px;
@@ -169,6 +173,7 @@ body {
 .hex-separate {
     margin: 3px;
     border-radius: 6px;
+    vertical-align: middle;
 }
 label {
     position: absolute;
@@ -203,4 +208,102 @@ input[type="checkbox"] {
         width: 100%;
         margin: 10px 0;
     }
+}
+
+/* Effects */
+.-ripple-container {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border-radius: inherit;
+	overflow: hidden;
+	left: 0;
+	top: 0;
+	pointer-events: none;
+	z-index: 9999;
+}
+.-ripple-item {
+	position: absolute;
+	width: 0;
+	height: 0;
+	padding-bottom: 0;
+	transform: translate(-50%, -50%);
+	background-color: #fff;
+	opacity: 0;
+	border-radius: 50%;
+	transition: padding-bottom .6s ease, width .6s ease, opacity .3s ease;
+}
+.-ripple-visible {
+	width: 300%;
+	padding-bottom: 300%;
+	opacity: .3;
+}
+.-tooltip {
+	position: absolute;
+	transform: translateX(-50%);
+    font-family: roboto, arial;
+	opacity: 0;
+	overflow: hidden;
+	color: transparent;
+	padding: 1px 15px;
+	max-width: 0;
+	height: 32px;
+	line-height: 32px;
+	border-radius: 8px;
+	transition: max-width 1.5s ease, opacity .2s ease, color .8s ease, margin-top .4s ease;
+	z-index: 9999999;
+	pointer-events: none;
+	font-size: 15px;
+	margin-top: -20px;
+	white-space: nowrap;
+   box-sizing: content-box;
+}
+.-tooltip-right { transform: translateX(-100%); }
+.-tooltip-bottom { margin-top: 20px; }
+.-tooltip.-tooltip-visible {
+	width: auto;
+	opacity: 1;
+	color: #fff;
+	max-width: 100%;
+	margin-top: 0;
+}
+.-ripple {
+	position: absolute;
+	width: 0;
+	padding-bottom: 0;
+	border-radius: 50%;
+	transform: translate(-50%, -50%) translateZ(0);
+	left: 50%;
+	top: 50%;
+	background-color: rgba(0,0,0,.6);
+	z-index: -1;
+	transition: width 1s ease, padding-bottom 1s ease;
+}
+.-ripple.-tooltip-visible {
+	width: 300%;
+	padding-bottom: 300%;
+}
+.snackbar {
+    font-family: roboto, arial;
+	position: fixed;
+	z-index: 9999;
+	width: auto;
+	height: 56px;
+	line-height: 56px;
+	padding: 0 35px;
+	background-color: #3c3c3c;
+	color: #fff;
+	bottom: -100px;
+	left: 50%;
+	font-size: 16px;
+	border-radius: 10px;
+	box-shadow: 0 3px 6px rgba(0,0,0,.2);
+	transform: translateX(-50%);
+	transition: bottom .3s ease;
+   pointer-events: none;
+}
+.snackbar-visible { bottom: 10px; }
+@keyframes snackbar {
+	0%, 100% { bottom: 10px; }
+	50% { bottom: -100px; }
 }

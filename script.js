@@ -12,6 +12,9 @@ window.addEventListener('load', () => {
     document.getElementById("calc").addEventListener('click', calculate);
     document.getElementById("convertSubmit").addEventListener('click', convert);
     document.getElementById("hammingSubmit").addEventListener('click', hammingConvert);
+    document.querySelectorAll(".ripple").forEach(addRipplesTo);
+    let ISA = document.getElementById("link_isa");
+    addTooltip(ISA, "Instruction Set");
 });
 
 // Determine if digit would be negative in 2s complement given the base
