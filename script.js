@@ -4,6 +4,7 @@ const INSTRUCTION_LENGTH = 32, R_OPCODE = "0110011", I_OPCODE = "0010011",
 const UNIT_OPTIONS = ["Binary", "Hex", "Unsigned Decimal", "Signed Decimal"];
 const BASE_UNITS = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'];
 const SIGNED = true, UNSIGNED = false, SIGN_EXTEND = true;
+const PARSE_MSG = ["Tag:", "Index:", "Offset:"];
 
 var binary, prevType;
 
@@ -130,6 +131,30 @@ function convert() {
     let outputField = document.getElementById('convertOutput');
     let output = convertBase(input, +fromBase, +toBase, sign);
     outputField.value = output;
+}
+
+// Parse a memory address in hex given the number of index bits and offset bits
+function parseAddress(addr, indexBits, offsetBits) {
+    if (addr.substring(0, 2) == "0x") addr = addr.substring(2);
+    let length = addr.length * 4,
+        tagBits = length - indexBits - offsetBits;
+    const binary = extend(convertBase(addr, 16, 2, UNSIGNED), length);
+    const bitLengths = [tagBits, indexBits, offsetBits];
+    for (let bit = length - 1, m = 0; m < 3; m++) {
+        let numBits = bitLengths[m];
+        let bits = getBits(binary, [[bit, bit - numBits + 1]]);
+        let dec = convertBase(bits, 2, 10, UNSIGNED);
+        console.log(`${PARSE_MSG[m]} ${dec}`);
+        bit -= numBits;
+    }
+}
+
+// Parse a set of memory addresses, same format as parseAddress
+function parseAddressSet(set, indexBits, offsetBits) {
+    set.forEach(addr => {
+        console.log("\n*** %s ***", addr);
+        parseAddress(addr, indexBits, offsetBits);
+    });
 }
 
 const isPowerOf2 = x => (Math.log(x) / Math.LN2 % 1) == 0;
