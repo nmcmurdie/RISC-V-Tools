@@ -3,6 +3,7 @@
     <head>
         <title>RISC-V Tools</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="UTF-8">
         <link rel="stylesheet" href="style.css" />
         <link rel="icon" href="res/icon.png" />
     </head>
@@ -11,7 +12,7 @@
             <div class="form-container decode-container" name="Instruction Decode">
                 <div class="label-group">
                     <label for="input">Instruction Hex</label>
-                    <input type="text" id="input" class="hex-form hex-input" name="hexInput" value="004b2283" />
+                    <input type="text" id="input" class="hex-form hex-input" name="hexInput" value="0x03f2c137" />
                     <div id="calc" class="hex-form hex-submit ripple"></div>
                 </div>
                 <br><br>
@@ -69,6 +70,26 @@
                 <div class="label-group">
                     <label for="hammingOutputFull">Full Encoding</label>
                     <input disabled type="text" id="hammingOutputFull" class="hex-form hex-input hex-separate" name="convertOutput" value="" />
+                </div>
+            </div>
+            <div class="form-container" name="Memory Address Decode">
+                <div class="label-group">
+                    <label for="memoryInput">Input</label>
+                    <input type="text" id="memoryInput" class="hex-form hex-input hex-separate" name="memoryInput" value="" />
+                </div>
+                <div class="label-group">
+                    <label for="memoryIndex">Index Bits</label>
+                    <input type="number" id="memoryIndex" class="hex-form hex-input hex-number hex-separate" name="memoryIndex" value="" />
+                </div>
+                <div class="label-group">
+                    <label for="memoryOffset">Offset Bits</label>
+                    <input type="number" id="memoryOffset" class="hex-form hex-input hex-number hex-separate" name="memoryOffset" value="" />
+                </div>
+                <div id="memorySubmit" class="hex-form hex-submit hex-separate ripple"></div>
+                <br><br>
+                <div class="label-group">
+                    <label for="memoryOutput">Output</label>
+                    <input disabled type="text" id="memoryOutput" class="hex-form hex-input hex-separate" name="memoryOutput" value="" />
                 </div>
             </div>
         </div>

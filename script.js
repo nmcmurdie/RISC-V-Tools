@@ -1,6 +1,7 @@
 'use strict'
 const INSTRUCTION_LENGTH = 32, R_OPCODE = "0110011", I_OPCODE = "0010011", 
-        S_OPCODE = "0100011", L_OPCODE = "0000011", SB_OPCODE = "1100011";
+        S_OPCODE = "0100011", L_OPCODE = "0000011", SB_OPCODE = "1100011",
+        U_OPCODE = "0110111";
 const UNIT_OPTIONS = ["Binary", "Hex", "Unsigned Decimal", "Signed Decimal"];
 const BASE_UNITS = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'];
 const SIGNED = true, UNSIGNED = false, SIGN_EXTEND = true;
@@ -259,6 +260,9 @@ function calculate(evt) {
         case SB_OPCODE:
             type = "SB";
             break;
+        case U_OPCODE:
+            type = "U";
+            break;
         default:
             type = "INVALID";
             break;
@@ -318,6 +322,11 @@ function processFields(type) {
             addField("rs1", [[19, 15]], sameType);
             addField("func3", [[14, 12]], sameType);
             break;
+        case "U":
+            let imm_U = getBits(binary, [[31, 12]]);
+            while (imm_U.length < 32) imm_U += '0';
+            addField("imm", imm_U, sameType);
+            addField("rd", [[11, 7]], sameType);
     }
 
     prevType = type;
